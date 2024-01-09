@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+</head>
+<body>
+    <h1>THIS IS STATIC RESOURCE</h1>
+    <script src="/socket.io/socket.io.js"></script>
+    <input type="text" id="message" placeholder="ENTER MESSAGE">
+    <button id="send">SEND</button>
+    <div id ="users">
+
+    </div>
+    <div id = "messages">
+
+    </div>
+    <script>
+        const socket = io();
+        const sendBtn = document.getElementById('send');
+        const message = document.getElementById('message');
+        const messages = document.getElementById('messages');
+        const users = document.getElementById('users');
+
+
+        socket.on("user_message",(msg)=>{
+            const p = document.createElement('p');
+            p.innerText = msg;
+            messages.appendChild(p);
+        });  
+        
+        socket.on("user_connected",(user)=>{
+            const h1 = document.createElement('h1');
+            h1.innerText = user + " connected";
+            users.appendChild(h1);
+
+        })
+        sendBtn.addEventListener("click",()=>{
+            const msg = message.value;
+            socket.emit("user_message",msg);
+        })
+        
+    </script>
+</body>
+</html>
